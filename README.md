@@ -40,6 +40,57 @@ User → Azure DNS → Azure WAF → Azure Load Balancer (NGINX Ingress)
 | X-Ray | **Application Insights** | |
 | S3 (state) | **Storage Account (blob)** | |
 
+## What's Identical (Cloud-Agnostic)
+
+- Kubernetes manifests (Deployments, Services, ConfigMaps)
+- Helm charts and templates
+- HPA autoscaling configs
+- NetworkPolicies (default-deny + per-service allow)
+- ArgoCD Application CRDs and sync policies
+- Docker images and Dockerfile
+- Git workflow (issue → branch → PR → merge)
+
+## Project Structure
+
+```
+azure-ausmart/
+  bootstrap/           # State backend (Storage Account + container)
+  modules/             # Terraform modules (VNet, AKS, Key Vault, DB, Redis, ACR, WAF, NSG, Monitoring)
+  envs/                # Per-environment configs (au-dev, au-prod, us-prod)
+  kubernetes/          # K8s manifests (5 services + ingress + network policies)
+  helm/                # Helm charts + per-env values
+  cicd/                # GitHub Actions + ArgoCD
+  observability/       # OTEL → Azure Monitor + Application Insights
+  autoscaling/         # HPA configs + KEDA
+  diagrams/            # Architecture diagrams (mermaid + text)
+```
+
+## Quick Start
+
+```bash
+# 0. Bootstrap state backend (run once)
+cd bootstrap/
+terraform init && terraform apply
+
+# 1. Provision infrastructure
+cd ../envs/au-dev/
+terraform init
+terraform apply -var-file="terraform.tfvars"
+
+# 2. Configure kubectl
+az aks get-credentials --resource-group ausmart-dev-rg --name ausmart-aks
+
+# 3. Deploy application
+kubectl apply -f kubernetes/manifests/00-namespace/
+kubectl apply -f kubernetes/manifests/01-secrets/
+kubectl apply -f kubernetes/manifests/02-catalog/
+kubectl apply -f kubernetes/manifests/03-cart/
+kubectl apply -f kubernetes/manifests/04-checkout/
+kubectl apply -f kubernetes/manifests/05-orders/
+kubectl apply -f kubernetes/manifests/06-ui/
+kubectl apply -f kubernetes/manifests/07-ingress/
+```
+
 ## Tech Stack
 
 - **Infrastructure**: Terraform, Azure VNet, AKS, Key Vault
@@ -48,6 +99,10 @@ User → Azure DNS → Azure WAF → Azure Load Balancer (NGINX Ingress)
 - **Observability**: OpenTelemetry, Azure Monitor, Application Insights
 - **CI/CD**: GitHub Actions (OIDC → Azure AD)
 - **Security**: Azure WAF, Key Vault CSI, Workload Identity, NetworkPolicies, NSGs
+
+## See Also
+
+- [AWS EKS version](https://github.com/iammanjubhandari/devops-eks-ausmart) — same app, AWS services
 
 ## Author
 
