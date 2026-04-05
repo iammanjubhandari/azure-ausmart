@@ -70,6 +70,8 @@ resource "azurerm_subnet" "private_data_general" {
   address_prefixes     = [var.private_data_subnet_cidrs[2]]
 }
 
+# TODO: need NSG rules for private subnets - currently wide open
+
 # NAT Gateway Public IP
 resource "azurerm_public_ip" "nat" {
   count               = var.enable_nat_gateway ? 1 : 0
