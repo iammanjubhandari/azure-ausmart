@@ -19,6 +19,16 @@ User → Azure DNS → Azure WAF → Azure Load Balancer (NGINX Ingress)
               (Azure DB for MySQL/PG, Redis, Service Bus)
 ```
 
+## AWS → Azure Service Mapping
+
+| AWS Service | Azure Service |
+|-------------|--------------|
+| EKS | **AKS** |
+| VPC | **VNet** |
+| ALB + LBC | **Azure LB + NGINX Ingress** |
+| RDS MySQL/PG | **Azure DB Flexible Server** |
+| ElastiCache Redis | **Azure Cache for Redis** |
+
 ## Tech Stack
 
 - **Infrastructure**: Terraform, Azure VNet, AKS, Key Vault
