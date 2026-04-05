@@ -31,3 +31,5 @@ resource "azurerm_storage_account" "tfstate" {
     prevent_destroy = true
   }
 }
+
+# TODO: need to add the blob container for tfstate
