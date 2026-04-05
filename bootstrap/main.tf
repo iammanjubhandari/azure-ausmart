@@ -32,4 +32,12 @@ resource "azurerm_storage_account" "tfstate" {
   }
 }
 
-# TODO: need to add the blob container for tfstate
+resource "azurerm_storage_container" "tfstate" {
+  name                  = "tfstate"
+  storage_account_id    = azurerm_storage_account.tfstate.id
+  container_access_type = "private"
+}
+
+output "next_steps" {
+  value = "State backend created. Now run: cd ../envs/au-dev/ && terraform init"
+}
