@@ -1,0 +1,80 @@
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+*.tfplan
+tfplan
+tfplan.binary
+**/plans/
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+
+# Block all .tfvars by default - secrets.auto.tfvars has email/passwords
+*.tfvars
+*.tfvars.json
+
+# Only allow the env config tfvars (no secrets in these)
+!envs/au-dev/terraform.tfvars
+!envs/au-prod/terraform.tfvars
+!envs/us-prod/terraform.tfvars
+
+# Secrets - never commit these
+.env
+.env.*
+.env.local
+.env.production
+*.credentials
+**/credentials.json
+**/access-keys*
+**/.aws/
+
+# SSH keys / TLS certs
+*.pem
+*.key
+*.crt
+*.csr
+*.p12
+*.pfx
+id_rsa
+id_ed25519
+*.pub
+
+# Kubernetes secrets + kubeconfig
+*-secret.yaml
+*-credentials.yaml
+kubeconfig
+kubeconfig.*
+.kube/
+.docker/config.json  # docker login tokens
+
+# Private docs - not for public repo
+docs/
+WORKFLOW-GUIDE.md
+TERRAFORM-STYLE-GUIDE.md
+fixes-*.md
+fix-*.md
+
+# Secrets with real endpoints/credentials - never commit
+# secrets.auto.tfvars is already blocked by *.tfvars above
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+tmp/
+temp/
